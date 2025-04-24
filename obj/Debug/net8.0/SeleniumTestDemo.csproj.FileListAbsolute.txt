@@ -19,3 +19,4 @@
 /mnt/c/Users/andyt/dev/SeleniumTestDemo/obj/Debug/net8.0/SeleniumTestDemo.pdb
 /mnt/c/Users/andyt/dev/SeleniumTestDemo/obj/Debug/net8.0/SeleniumTestDemo.genruntimeconfig.cache
 /mnt/c/Users/andyt/dev/SeleniumTestDemo/obj/Debug/net8.0/ref/SeleniumTestDemo.dll
+/mnt/c/Users/andyt/dev/SeleniumTestDemo/obj/Debug/net8.0/SeleniumTestDemo.sourcelink.json

@@ -5,7 +5,7 @@ class Program
 {
     static async Task Main()
     {
-        // await HomeNetNavTest.Run();
-        await WeatherHybridTest.Run();
+        await HomeNetNavTest.Run();
+        await OpenAIChatTest.Run();
     }
 }
