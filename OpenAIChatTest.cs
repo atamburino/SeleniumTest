@@ -18,7 +18,7 @@ public static class OpenAIChatTest
         try
         {
             driver.Navigate().GoToUrl(appUrl);
-            await Task.Delay(1); // to avoid CS1998 warning
+            await Task.Delay(1); // Prevent CS1998 warning
 
             WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(20));
 
@@ -41,19 +41,21 @@ public static class OpenAIChatTest
             Console.WriteLine("✅ Send button clicked.");
 
             // Give the chat UI a moment to process and render the response
-            await Task.Delay(3000); // 3 seconds — adjust as needed
+            await Task.Delay(3000);
 
             // Wait for new messages to appear
             wait.Until(d => d.FindElements(By.CssSelector("p.chakra-text")).Any());
 
             var responseElements = driver.FindElements(By.CssSelector("p.chakra-text"));
-            Console.WriteLine($"🔍 Found {responseElements.Count} <p.chakra-text> elements.");
+            // Console.WriteLine($"\n🔍 Total chat entries found: {responseElements.Count}");
 
-            // Debug log all message text
+            // 🛠️ Uncomment for full message log
+            /*
             foreach (var el in responseElements)
             {
                 Console.WriteLine($"→ {el.Text}");
             }
+            */
 
             // Extract response directly after the sent message
             var messages = responseElements.Select(e => e.Text.Trim()).ToList();
@@ -65,8 +67,11 @@ public static class OpenAIChatTest
 
             if (!string.IsNullOrWhiteSpace(latestResponse))
             {
-                Console.WriteLine($"🧠 OpenAI Response: {latestResponse}");
-                Console.WriteLine("✅ OpenAI response successfully rendered in UI.");
+                Console.WriteLine("\n==============================");
+                Console.WriteLine("🧠 OpenAI Response:");
+                Console.WriteLine(latestResponse);
+                Console.WriteLine("✅ Successfully rendered in UI");
+                Console.WriteLine("==============================\n");
             }
             else
             {
