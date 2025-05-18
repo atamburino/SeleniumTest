@@ -29,8 +29,9 @@ This repository is a reference system for UI and performance testing, designed t
 
 ---
 
-## How to Run Selenium Tests
+## How to Run Tests
 
+### Selenium Tests (UI)
 1. **Install dependencies:**
    - Ensure you have .NET 8.0 SDK installed.
    - Chrome browser must be installed (for ChromeDriver).
@@ -38,11 +39,25 @@ This repository is a reference system for UI and performance testing, designed t
    ```bash
    dotnet restore
    ```
-3. **Run the tests:**
+3. **Run the Selenium tests:**
    ```bash
    dotnet run
    ```
    This will execute the Selenium tests in `/tests/` (currently `HomeNetNavTest` and `OpenAIChatTest`).
+
+### xUnit & SpecFlow Tests
+1. **Run all tests (including xUnit and SpecFlow):**
+   ```bash
+   dotnet test
+   ```
+   This will run all xUnit and SpecFlow tests, including the sample math tests.
+
+---
+
+## Sample Tests
+
+- **xUnit:** See `tests/SampleXunitTest.cs` for a basic unit test.
+- **SpecFlow (BDD):** See `features/sample.feature` and `tests/SampleFeatureSteps.cs` for a Gherkin scenario and its step definitions.
 
 ---
 
