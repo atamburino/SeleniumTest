@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "uMiKs6CU/DY=",
+  "dgSpecHash": "mBuRBTHWwHE=",
   "success": true,
-  "projectFilePath": "/mnt/c/Users/andyt/dev/SeleniumTestDemo/SeleniumTestDemo.csproj",
+  "projectFilePath": "/mnt/c/users/andyt/dev/SeleniumTestDemo/SeleniumTestDemo.csproj",
   "expectedPackageFiles": [
     "/home/andy/.nuget/packages/selenium.support/4.31.0/selenium.support.4.31.0.nupkg.sha512",
     "/home/andy/.nuget/packages/selenium.webdriver/4.31.0/selenium.webdriver.4.31.0.nupkg.sha512",

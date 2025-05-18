@@ -117,11 +117,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/mnt/c/Users/andyt/dev/SeleniumTestDemo/SeleniumTestDemo.csproj",
+      "projectUniqueName": "/mnt/c/users/andyt/dev/SeleniumTestDemo/SeleniumTestDemo.csproj",
       "projectName": "SeleniumTestDemo",
-      "projectPath": "/mnt/c/Users/andyt/dev/SeleniumTestDemo/SeleniumTestDemo.csproj",
+      "projectPath": "/mnt/c/users/andyt/dev/SeleniumTestDemo/SeleniumTestDemo.csproj",
       "packagesPath": "/home/andy/.nuget/packages/",
-      "outputPath": "/mnt/c/Users/andyt/dev/SeleniumTestDemo/obj/",
+      "outputPath": "/mnt/c/users/andyt/dev/SeleniumTestDemo/obj/",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "/home/andy/.nuget/NuGet/NuGet.Config"
