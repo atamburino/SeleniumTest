@@ -1,156 +1,169 @@
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
-using System;
-using System.Threading.Tasks;
+using OpenQA.Selenium.Support.UI;
 using Xunit;
 using Xunit.Abstractions;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading;
 
 namespace SeleniumTestDemo.Tests
 {
-    public class InternetHerokuappTests
+    public class WebDriverFixture : IDisposable
     {
-        private readonly ITestOutputHelper _output;
+        public IWebDriver Driver { get; private set; }
 
-        public InternetHerokuappTests(ITestOutputHelper output)
+        public WebDriverFixture()
         {
+            var options = new ChromeOptions();
+            options.AddArgument("--headless");
+            options.AddArgument("--no-sandbox");
+            options.AddArgument("--disable-dev-shm-usage");
+            Driver = new ChromeDriver(options);
+            Driver.Manage().Window.Maximize();
+            Driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(10);
+        }
+
+        public void Dispose()
+        {
+            Driver?.Quit();
+            Driver?.Dispose();
+        }
+    }
+
+    public class InternetHerokuappTests : IClassFixture<WebDriverFixture>
+    {
+        private readonly IWebDriver _driver;
+        private readonly ITestOutputHelper _output;
+        private readonly WebDriverWait _wait;
+        private const string BaseUrl = "https://the-internet.herokuapp.com/";
+
+        public InternetHerokuappTests(WebDriverFixture fixture, ITestOutputHelper output)
+        {
+            _driver = fixture.Driver;
             _output = output;
+            _wait = new WebDriverWait(_driver, TimeSpan.FromSeconds(10));
         }
 
         [Fact]
-        public async Task InternetHerokuappNavLinks_Work()
+        public void InternetHerokuappNavLinks_Work()
         {
-            string baseUrl = "https://the-internet.herokuapp.com";
-
-            _output.WriteLine($"📘 Nav Test Log - {DateTime.Now}\n");
-
-            IWebDriver driver = new ChromeDriver();
-
             try
             {
-                driver.Navigate().GoToUrl(baseUrl);
-                await Task.Delay(2000);
-
-                // Find all <li> elements inside the <ul>
-                var listItems = driver.FindElements(By.CssSelector("#content li"));
-
-                // Log the count of <li> elements found
-                _output.WriteLine($"Found {listItems.Count} <li> elements in the <ul>.");
-
-                // Optionally, iterate through the list items and log their text
-                foreach (var item in listItems)
+                _output.WriteLine($"\n📘 Nav Test Log - {DateTime.Now}\n");
+                _driver.Navigate().GoToUrl(BaseUrl);
+                
+                var navItems = _driver.FindElements(By.CssSelector("ul li"));
+                _output.WriteLine($"\nFound {navItems.Count} <li> elements in the <ul>.");
+                
+                foreach (var item in navItems)
                 {
-                    _output.WriteLine($" - {item.Text}");
+                    _output.WriteLine($"  - {item.Text}");
                 }
+                
+                Assert.True(navItems.Count > 0, "No navigation items found");
             }
             catch (Exception ex)
             {
-                _output.WriteLine($"Error: {ex.Message}");
-            }
-            finally
-            {
-                driver.Quit();
+                _output.WriteLine($"Error in navigation test: {ex.Message}");
+                throw;
             }
         }
 
         [Fact]
-        public async Task AddRemoveElements_Work()
+        public void AddRemoveElements_Work()
         {
-            string baseUrl = "https://the-internet.herokuapp.com/add_remove_elements/";
-            _output.WriteLine($"📘 Add/Remove Elements Test Log - {DateTime.Now}\n");
-
-            IWebDriver driver = new ChromeDriver();
-
             try
             {
-                // Navigate to the Add/Remove Elements page
-                driver.Navigate().GoToUrl(baseUrl);
-                await Task.Delay(2000);
-
-                // Find and click the Add Element button
-                var addButton = driver.FindElement(By.CssSelector("button[onclick='addElement()']"));
+                _output.WriteLine($"\n📘 Add/Remove Elements Test Log - {DateTime.Now}\n");
+                _driver.Navigate().GoToUrl($"{BaseUrl}add_remove_elements/");
+                
+                var addButton = _wait.Until(d => d.FindElement(By.CssSelector("button[onclick='addElement()']")));
                 _output.WriteLine("Found Add Element button");
                 addButton.Click();
                 _output.WriteLine("Clicked Add Element button");
-                await Task.Delay(1000);
-
-                // Verify the Delete button was added
-                var deleteButton = driver.FindElement(By.CssSelector("button.added-manually"));
+                
+                var deleteButton = _wait.Until(d => d.FindElement(By.CssSelector("button.added-manually")));
                 _output.WriteLine("Found Delete button");
-                Assert.True(deleteButton.Displayed, "Delete button should be visible");
-
-                // Click the Delete button
                 deleteButton.Click();
                 _output.WriteLine("Clicked Delete button");
-                await Task.Delay(1000);
-
-                // Verify the Delete button was removed
-                var deleteButtons = driver.FindElements(By.CssSelector("button.added-manually"));
+                
+                Thread.Sleep(1000);
+                var deleteButtons = _driver.FindElements(By.CssSelector("button.added-manually"));
                 Assert.Empty(deleteButtons);
                 _output.WriteLine("Verified Delete button was removed");
             }
             catch (Exception ex)
             {
-                _output.WriteLine($"Error: {ex.Message}");
+                _output.WriteLine($"Error in add/remove elements test: {ex.Message}");
                 throw;
-            }
-            finally
-            {
-                driver.Quit();
             }
         }
 
         [Fact]
-        public async Task AddRemoveMultipleElements_Work()
+        public void AddRemoveMultipleElements_Work()
         {
-            string baseUrl = "https://the-internet.herokuapp.com/add_remove_elements/";
-            _output.WriteLine($"📘 Add/Remove Multiple Elements Test Log - {DateTime.Now}\n");
-
-            IWebDriver driver = new ChromeDriver();
-
             try
             {
-                // Navigate to the Add/Remove Elements page
-                driver.Navigate().GoToUrl(baseUrl);
-                await Task.Delay(2000);
-
-                // Add 5 elements
-                var addButton = driver.FindElement(By.CssSelector("button[onclick='addElement()']"));
+                _output.WriteLine($"\n📘 Add/Remove Multiple Elements Test Log - {DateTime.Now}\n");
+                _driver.Navigate().GoToUrl($"{BaseUrl}add_remove_elements/");
+                
+                var addButton = _wait.Until(d => d.FindElement(By.CssSelector("button[onclick='addElement()']")));
                 _output.WriteLine("Found Add Element button");
-
+                
+                // Add 5 elements
                 for (int i = 1; i <= 5; i++)
                 {
                     addButton.Click();
+                    Thread.Sleep(500); // Small delay between clicks
                     _output.WriteLine($"Added element {i}");
-                    await Task.Delay(500);
                 }
-
-                // Verify 5 delete buttons were added
-                var deleteButtons = driver.FindElements(By.CssSelector("button.added-manually"));
+                
+                var deleteButtons = _driver.FindElements(By.CssSelector("button.added-manually"));
                 Assert.Equal(5, deleteButtons.Count);
-                _output.WriteLine($"Verified {deleteButtons.Count} Delete buttons are present");
-
-                // Delete all buttons one by one
-                for (int i = deleteButtons.Count; i > 0; i--)
+                _output.WriteLine("Verified 5 Delete buttons are present");
+                
+                // Delete all buttons
+                for (int i = 5; i >= 1; i--)
                 {
-                    var currentDeleteButtons = driver.FindElements(By.CssSelector("button.added-manually"));
-                    currentDeleteButtons[0].Click();
+                    var button = _wait.Until(d => d.FindElement(By.CssSelector("button.added-manually")));
+                    button.Click();
+                    Thread.Sleep(500); // Small delay between clicks
                     _output.WriteLine($"Deleted element {i}");
-                    await Task.Delay(500);
                 }
-
-                // Verify all delete buttons were removed
-                deleteButtons = driver.FindElements(By.CssSelector("button.added-manually"));
+                
+                deleteButtons = _driver.FindElements(By.CssSelector("button.added-manually"));
                 Assert.Empty(deleteButtons);
                 _output.WriteLine("Verified all Delete buttons were removed");
             }
             catch (Exception ex)
             {
-                _output.WriteLine($"Error: {ex.Message}");
+                _output.WriteLine($"Error in add/remove multiple elements test: {ex.Message}");
                 throw;
             }
-            finally
+        }
+
+        [Fact]
+        public void BasicAuth_Work()
+        {
+            try
             {
-                driver.Quit();
+                _output.WriteLine($"\n📘 Testing Auth Test Log - {DateTime.Now}\n");
+                string username = "admin";
+                string password = "admin";
+                string baseUrl = $"https://{username}:{password}@the-internet.herokuapp.com/basic_auth/";
+                
+                _driver.Navigate().GoToUrl(baseUrl);
+                
+                var successMessage = _wait.Until(d => d.FindElement(By.CssSelector("p")));
+                Assert.Contains("Congratulations!", successMessage.Text);
+                _output.WriteLine("Successfully authenticated and found success message");
+            }
+            catch (Exception ex)
+            {
+                _output.WriteLine($"Error in basic auth test: {ex.Message}");
+                throw;
             }
         }
     }
