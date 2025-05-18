@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "zEEw/PI200c=",
+  "dgSpecHash": "zEM4LsTCHLU=",
   "success": true,
-  "projectFilePath": "/mnt/c/users/andyt/dev/SeleniumTestDemo/SeleniumTestDemo.csproj",
+  "projectFilePath": "/mnt/c/Users/andyt/dev/seleniumTestDemo/SeleniumTestDemo.csproj",
   "expectedPackageFiles": [
     "/home/andy/.nuget/packages/bodi/1.5.0/bodi.1.5.0.nupkg.sha512",
     "/home/andy/.nuget/packages/gherkin/19.0.3/gherkin.19.0.3.nupkg.sha512",

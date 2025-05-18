@@ -6484,11 +6484,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/mnt/c/users/andyt/dev/SeleniumTestDemo/SeleniumTestDemo.csproj",
+      "projectUniqueName": "/mnt/c/Users/andyt/dev/seleniumTestDemo/SeleniumTestDemo.csproj",
       "projectName": "SeleniumTestDemo",
-      "projectPath": "/mnt/c/users/andyt/dev/SeleniumTestDemo/SeleniumTestDemo.csproj",
+      "projectPath": "/mnt/c/Users/andyt/dev/seleniumTestDemo/SeleniumTestDemo.csproj",
       "packagesPath": "/home/andy/.nuget/packages/",
-      "outputPath": "/mnt/c/users/andyt/dev/SeleniumTestDemo/obj/",
+      "outputPath": "/mnt/c/Users/andyt/dev/seleniumTestDemo/obj/",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "/home/andy/.nuget/NuGet/NuGet.Config"
